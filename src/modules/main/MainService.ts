@@ -1,0 +1,37 @@
+import { CommanderStatic } from 'commander';
+import { Injectable, Inject } from '@nestjs/common';
+import { OrchestrationService } from '../orchestration/OrchestrationService';
+
+@Injectable()
+export class MainService {
+
+	private commander: CommanderStatic;
+	private orchestrationService: OrchestrationService;
+
+	constructor(@Inject('commander') commander: CommanderStatic, orchestrationService: OrchestrationService) {
+		this.commander = commander;
+		this.orchestrationService = orchestrationService;
+	}
+
+	public async init(version: string) : Promise<void> {
+
+		let actionToExecute: Promise<any> = Promise.resolve();
+
+		this.commander.version(version, '-v, --version');
+
+		this.commander
+			.command('create')
+			.description('Creates the scaffolding for a new cli project.')
+			.action(() => actionToExecute = this.orchestrationService.buildDirectoryStructure());
+
+		this.commander.parse(process.argv);
+
+		if(!this.commander.args.length) {
+			this.commander.help();
+			return;
+		}
+
+		await actionToExecute;
+	}
+
+}
