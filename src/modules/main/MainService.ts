@@ -13,7 +13,7 @@ export class MainService {
 		this.orchestrationService = orchestrationService;
 	}
 
-	public async init(version: string) : Promise<void> {
+	public async init(version: string, isDevelopment: boolean) : Promise<void> {
 
 		let actionToExecute: Promise<any> = Promise.resolve();
 
@@ -22,7 +22,7 @@ export class MainService {
 		this.commander
 			.command('create')
 			.description('Creates the scaffolding for a new cli project.')
-			.action(() => actionToExecute = this.orchestrationService.buildDirectoryStructure());
+			.action(() => actionToExecute = this.orchestrationService.createNewProject(isDevelopment));
 
 		this.commander.parse(process.argv);
 

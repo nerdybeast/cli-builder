@@ -15,5 +15,5 @@ export async function bootstrap(version: string, isDevelopment: boolean) {
 	const application = await NestFactory.createApplicationContext(MainModule, applicationContextOptions);
 	const mainService = application.get(MainService);
 
-	await mainService.init(version);
+	await mainService.init(version, isDevelopment);
 }

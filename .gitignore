@@ -99,3 +99,20 @@ public
 
 # TernJS port file
 .tern-port
+
+###############################################################################################
+# Everything above this line was taken from Github's public gitignore repo for node js projects
+# See: https://github.com/github/gitignore/blob/master/Node.gitignore
+###############################################################################################
+
+# Build output - this needs to be pushed up to the npm registry but should not be tracked in git.
+dist/
+
+# Typescript incremental compilation file - speeds up typescript builds but should be unique per user.
+tsconfig.tsbuildinfo
+
+# vscode config - each user may have their own preference
+.vscode/
+
+# The created cli project will be spit out here during development
+temp/
