@@ -13,6 +13,7 @@
     "@nestjs/core": "^6.8.3",
     "@types/node": "^12.11.6",
     "commander": "^3.0.2",
+    "fs-extra": "^8.1.0",
     "inquirer": "^7.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.3",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@nestjs/testing": "^6.8.3",
+    "@types/fs-extra": "^8.0.1",
     "@types/inquirer": "^6.5.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0",
