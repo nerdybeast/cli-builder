@@ -1,9 +1,4 @@
-/**
- * Returns the raw contents of the node gitignore file.
- * TODO: Callout to pull this data fresh from https://github.com/github/gitignore
- */
-export function getGitignoreContents() : string {
-	return `# Logs
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -118,6 +113,3 @@ tsconfig.tsbuildinfo
 
 # vscode config - each user may have their own preference
 .vscode/
-
-`
-}

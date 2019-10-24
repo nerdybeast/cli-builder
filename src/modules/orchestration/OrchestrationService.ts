@@ -1,8 +1,6 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { PackageJsonService } from "../package-json/PackageJsonService";
 import { FileModel } from "./FileModel";
-import { getGitignoreContents } from "../../getGitignoreContents";
-import { getRunFileContents, getRunFileContentsWindows } from "../../getRunFileContents";
 import FsExtra from 'fs-extra';
 import Path from 'path';
 
@@ -22,14 +20,17 @@ export class OrchestrationService {
 	public async createNewProject(isDevelopment: boolean) {
 
 		const directoryStructure = await this.buildDirectoryStructure();
-		const basePath = isDevelopment ? this.path.join(__dirname, '../../../temp') : this.path.normalize(process.cwd());
+		const destinationDirectory = isDevelopment ? this.path.join(__dirname, '../../../temp') : this.path.normalize(process.cwd());
 
 		if(isDevelopment) {
-			await this.fs.emptyDir(basePath);
+			await this.fs.emptyDir(destinationDirectory);
 		}
 
+		const source = this.path.join(__dirname, '../../../static-directory-structure');
+		await this.fs.copy(source, destinationDirectory);
+
 		for(const fileModel of directoryStructure) {
-			const filePath = this.path.join(basePath, fileModel.path);
+			const filePath = this.path.join(destinationDirectory, fileModel.path);
 			await this.fs.ensureFile(filePath);
 			await this.fs.writeFile(filePath, fileModel.contents, 'utf8');
 		}
@@ -41,20 +42,8 @@ export class OrchestrationService {
 		const packageJsonContents = JSON.stringify(packageJsonDetails, undefined, '\t');
 		const packageJsonFileModel = new FileModel('./package.json', packageJsonContents);
 
-		const gitignoreContents = getGitignoreContents();
-		const gitignoreFileModel = new FileModel('./.gitignore', gitignoreContents);
-
-		const runFileContents = getRunFileContents();
-		const runFileModel = new FileModel('./bin/run', runFileContents);
-
-		const runFileContentsWindows = getRunFileContentsWindows();
-		const runFileWindowsModel = new FileModel('./bin/run.cmd', runFileContentsWindows);
-
-		const directoryStructure = [
-			packageJsonFileModel,
-			gitignoreFileModel,
-			runFileModel,
-			runFileWindowsModel
+		const directoryStructure: FileModel[] = [
+			packageJsonFileModel
 		];
 
 		console.log(directoryStructure);

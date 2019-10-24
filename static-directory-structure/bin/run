@@ -1,5 +1,4 @@
-export function getRunFileContents() : string {
-	return `#!/usr/bin/env node
+#!/usr/bin/env node
 
 const fs = require('fs');
 const path = require('path');
@@ -13,17 +12,6 @@ if (isDevelopment) {
 	require('ts-node').register({ project: tsconfigPath });
 }
 
-require(\`../\${moduleToUse}\`)
+require(`../${moduleToUse}`)
 	.bootstrap(packageJson.version, isDevelopment)
 	.catch(error => console.error('An error has occurred:', error));
-	
-`;
-}
-
-export function getRunFileContentsWindows() : string {
-	return `@echo off
-
-node "%~dp0\run" %*
-
-`;
-}
