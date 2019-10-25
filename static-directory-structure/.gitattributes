@@ -1,5 +1,6 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto
 
-# Convert all the js files to *nix line endings on commit.
+# Convert all the js files to *nix line endings on commit so that they can be executed
+# seamlessly on Mac/Windows/Linux.
 *.js text eol=lf

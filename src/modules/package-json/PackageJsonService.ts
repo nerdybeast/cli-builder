@@ -1,5 +1,4 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { PackageJsonModel } from './PackageJsonModel';
 import { Inquirer } from 'inquirer';
 
 @Injectable()
@@ -11,17 +10,57 @@ export class PackageJsonService {
 		this.inquirer = inquirer;
 	}
 
-	public async askForDetails() : Promise<PackageJsonModel> {
+	public async askForDetails() : Promise<any> {
 
 		const answers = await this.inquirer.prompt([{
 			type: 'input',
 			name: 'packageName',
 			message: 'Please enter the package name (don\'t forget to add the scope name if required)',
+			validate(packageName: string) {
+
+				packageName = (packageName || '').trim();
+
+				if(!packageName) {
+					return false;
+				}
+
+				const pattern = /^@?[a-z\-_\.]+\/?[a-z\-_\.]*$/;
+
+				if(pattern.test(packageName)) {
+					return true;
+				}
+
+				return 'NPM package names can only contain lower-case letters, dashes, underscores, and periods (examples: "@penrod/sweet_util", "new-http-lib", "@restjs/http.module")';
+			},
+
 		}, {
 			type: 'input',
 			name: 'version',
 			message: 'Please enter the version number (must be a valid semver version)',
-			default: '0.0.1'
+			default: '0.0.1',
+			validate(version: string) {
+
+				version = (version || '').trim();
+
+				if(!version) {
+					return false;
+				}
+
+				const pattern = /^\d+\.\d+\.\d+$/;
+
+				if(pattern.test(version)) {
+
+					for(const section of version.split('.')) {
+						if(section.length > 1 && section[0] === '0') {
+							return `Version numbers may not contain leading zeros if multiple digits long, error at: "${section}"`;
+						}
+					}
+
+					return true;
+				}
+
+				return 'Version number must be in the format x.x.x and may only contain numbers';
+			}
 		}, {
 			type: 'input',
 			name: 'description',
@@ -30,34 +69,63 @@ export class PackageJsonService {
 			type: 'input',
 			name: 'author',
 			message: 'Please enter the author\'s name',
+		}, {
+			type: 'input',
+			name: 'cmd',
+			message: 'Please enter the name of the command that will be used to invoke this cli in the terminal',
+			default(answers: any) {
+
+				let packageName = answers.packageName.trim();
+
+				if(packageName.startsWith('@')) {
+					packageName = packageName.split('/')[1];
+				}
+
+				return packageName.replace(/[_\.]+/g, '-');
+			}
 		}]);
 
-		const model = new PackageJsonModel(answers.packageName, answers.version);
-		model.description = answers.description;
-		model.author = answers.author;
-
-		model.dependencies = {
-			"@nestjs/common": "^6.8.3",
-			"@nestjs/core": "^6.8.3",
-			"@types/node": "^12.11.6",
-			"commander": "^3.0.2",
-			"inquirer": "^7.0.0",
-			"reflect-metadata": "^0.1.13",
-			"rxjs": "^6.5.3",
-			"tslib": "^1.10.0"
-		};
-
-		model.devDependencies = {
-			"@nestjs/testing": "^6.8.3",
-			"@types/inquirer": "^6.5.0",
-			"jest": "^24.9.0",
-			"ts-jest": "^24.1.0",
-			"ts-node": "^8.4.1",
-			"tslint": "^5.20.0",
-			"typescript": "^3.6.4"
-		}
-
-		return Promise.resolve(model);
+		return Promise.resolve({
+			name: answers.packageName.trim(),
+			version: answers.version,
+			author: answers.author,
+			description: answers.description,
+			license: "ISC",
+			main: "./dist/index.js",
+			bin: {
+				[answers.cmd]: "./bin/run"
+			},
+			scripts: {
+				test: "jest"
+			},
+			dependencies: {
+				"@nestjs/common": "^6.8.3",
+				"@nestjs/core": "^6.8.3",
+				"@types/node": "^12.11.6",
+				"commander": "^3.0.2",
+				"inquirer": "^7.0.0",
+				"reflect-metadata": "^0.1.13",
+				"rxjs": "^6.5.3",
+				"tslib": "^1.10.0"
+			},
+			devDependencies: {
+				"@nestjs/testing": "^6.8.3",
+				"@types/inquirer": "^6.5.0",
+				"@types/jest": "^24.0.19",
+				"jest": "^24.9.0",
+				"ts-jest": "^24.1.0",
+				"ts-node": "^8.4.1",
+				"tslint": "^5.20.0",
+				"typescript": "^3.6.4"
+			},
+			jest: {
+				preset: "ts-jest",
+				testEnvironment: "node",
+				roots: [
+					"src"
+				]
+			}
+		});
 	}
 
 }

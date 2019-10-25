@@ -19,7 +19,7 @@ export class MainService {
 		this.commander
 			.command('ping')
 			.description('Simply replies to ensure this cli tool is working')
-			.action(() => actionToExecute = Promise.resolve('pong'));
+			.action(() => actionToExecute = Promise.resolve(console.log('pong')));
 
 		this.commander.parse(process.argv);
 

@@ -3,6 +3,7 @@ import { PackageJsonService } from "../package-json/PackageJsonService";
 import { FileModel } from "./FileModel";
 import FsExtra from 'fs-extra';
 import Path from 'path';
+import { IDEService } from '../ide/IDEService';
 
 @Injectable()
 export class OrchestrationService {
@@ -10,11 +11,13 @@ export class OrchestrationService {
 	private packageJsonService: PackageJsonService;
 	private fs: typeof FsExtra;
 	private path: typeof Path;
+	private ideService: IDEService;
 
-	constructor(packageJsonService: PackageJsonService, @Inject('fs-extra') fs: typeof FsExtra, @Inject('path') path: typeof Path) {
+	constructor(packageJsonService: PackageJsonService, @Inject('fs-extra') fs: typeof FsExtra, @Inject('path') path: typeof Path, ideService: IDEService) {
 		this.packageJsonService = packageJsonService;
 		this.fs = fs;
 		this.path = path;
+		this.ideService = ideService;
 	}
 
 	public async createNewProject(isDevelopment: boolean) {
@@ -46,7 +49,11 @@ export class OrchestrationService {
 			packageJsonFileModel
 		];
 
-		console.log(directoryStructure);
+		const vscodeFileModel = await this.ideService.vscodeSetup();
+
+		if(vscodeFileModel !== null) {
+			directoryStructure.push(vscodeFileModel);
+		}
 
 		return directoryStructure;
 	}

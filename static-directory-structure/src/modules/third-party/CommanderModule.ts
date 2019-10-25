@@ -1,8 +1,10 @@
 import { Module, Provider } from '@nestjs/common';
 import commander from 'commander';
 
-export const commanderProvider: Provider = {
-	provide: 'commander',
+export const commanderProviderName = 'commander';
+
+const commanderProvider: Provider = {
+	provide: commanderProviderName,
 	useValue: commander
 };
 
