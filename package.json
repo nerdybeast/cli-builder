@@ -3,8 +3,13 @@
   "version": "0.0.1",
   "description": "Scaffolds out a new cli project",
   "main": "./dist/index.js",
+  "bin": {
+    "cli-builder": "./dist/index.js"
+  },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "tslint": "tslint --project ./tsconfig.json",
+    "preversion": "npm run tslint && npm run test"
   },
   "author": "Michael Penrod <therealnerdybeast@gmail.com>",
   "license": "ISC",
@@ -29,5 +34,12 @@
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
     "typescript": "^3.6.4"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": [
+      "src"
+    ]
   }
 }

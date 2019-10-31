@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Inquirer } from 'inquirer';
+import { validatePackageName } from '../../utils/Validators';
 
 @Injectable()
 export class PackageJsonService {
@@ -16,23 +17,7 @@ export class PackageJsonService {
 			type: 'input',
 			name: 'packageName',
 			message: 'Please enter the package name (don\'t forget to add the scope name if required)',
-			validate(packageName: string) {
-
-				packageName = (packageName || '').trim();
-
-				if(!packageName) {
-					return false;
-				}
-
-				const pattern = /^@?[a-z\-_\.]+\/?[a-z\-_\.]*$/;
-
-				if(pattern.test(packageName)) {
-					return true;
-				}
-
-				return 'NPM package names can only contain lower-case letters, dashes, underscores, and periods (examples: "@penrod/sweet_util", "new-http-lib", "@restjs/http.module")';
-			},
-
+			validate: validatePackageName
 		}, {
 			type: 'input',
 			name: 'version',
@@ -87,9 +72,9 @@ export class PackageJsonService {
 
 		return Promise.resolve({
 			name: answers.packageName.trim(),
-			version: answers.version,
-			author: answers.author,
-			description: answers.description,
+			version: answers.version.trim(),
+			author: answers.author.trim(),
+			description: answers.description.trim(),
 			license: "ISC",
 			main: "./dist/index.js",
 			bin: {
