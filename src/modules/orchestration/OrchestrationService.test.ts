@@ -55,7 +55,7 @@ describe('OrchestrationService', () => {
 		jest.spyOn(fs, 'ensureFile').mockImplementation(() => Promise.resolve());
 		jest.spyOn(fs, 'writeFile').mockImplementation(() => Promise.resolve());
 
-		await orchestrationService.createNewProject(true);
+		await orchestrationService.createNewProject('');
 		
 	});
 });

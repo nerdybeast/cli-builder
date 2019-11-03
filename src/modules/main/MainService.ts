@@ -1,6 +1,7 @@
 import { CommanderStatic } from 'commander';
 import { Injectable, Inject } from '@nestjs/common';
 import { OrchestrationService } from '../orchestration/OrchestrationService';
+import path from 'path';
 
 @Injectable()
 export class MainService {
@@ -22,7 +23,10 @@ export class MainService {
 		this.commander
 			.command('create')
 			.description('Creates the scaffolding for a new cli project.')
-			.action(() => actionToExecute = this.orchestrationService.createNewProject(isDevelopment));
+			.action(() => {
+				const destinationDirectory = isDevelopment ? path.join(__dirname, '../../../temp') : path.normalize(process.cwd());
+				actionToExecute = this.orchestrationService.createNewProject(destinationDirectory);
+			});
 
 		this.commander.parse(process.argv);
 

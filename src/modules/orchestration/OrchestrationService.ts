@@ -20,14 +20,17 @@ export class OrchestrationService {
 		this.ideService = ideService;
 	}
 
-	public async createNewProject(isDevelopment: boolean) : Promise<void> {
+	public async createNewProject(currentWorkingDirectory: string) : Promise<void> {
+
+		const packageJsonDetails = await this.packageJsonService.askForDetails();
+		const packageJsonContents = JSON.stringify(packageJsonDetails, undefined, '\t');
+		const packageJsonFileModel = new FileModel('./package.json', packageJsonContents);
+		
+		//Use the name of the command as the folder name where we'll drop this cli
+		const destinationDirectory = this.path.join(currentWorkingDirectory, Object.keys(packageJsonDetails.bin)[0]);
 
 		const directoryStructure = await this.buildDirectoryStructure();
-		const destinationDirectory = isDevelopment ? this.path.join(__dirname, '../../../temp') : this.path.normalize(process.cwd());
-
-		if(isDevelopment) {
-			await this.fs.emptyDir(destinationDirectory);
-		}
+		directoryStructure.push(packageJsonFileModel);
 
 		const source = this.path.join(__dirname, '../../../static-directory-structure');
 		await this.fs.copy(source, destinationDirectory);
@@ -41,14 +44,7 @@ export class OrchestrationService {
 
 	public async buildDirectoryStructure() : Promise<FileModel[]> {
 
-		const packageJsonDetails = await this.packageJsonService.askForDetails();
-		const packageJsonContents = JSON.stringify(packageJsonDetails, undefined, '\t');
-		const packageJsonFileModel = new FileModel('./package.json', packageJsonContents);
-
-		const directoryStructure: FileModel[] = [
-			packageJsonFileModel
-		];
-
+		const directoryStructure: FileModel[] = [];
 		const vscodeFileModel = await this.ideService.vscodeSetup();
 
 		if(vscodeFileModel !== null) {
