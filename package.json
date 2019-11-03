@@ -7,10 +7,16 @@
     "cli-builder": "./dist/index.js"
   },
   "scripts": {
-    "test": "jest",
-    "tslint": "tslint --project ./tsconfig.json",
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish",
     "preversion": "npm run tslint && npm run test",
-    "clean": "rimraf dist tsconfig.tsbuildinfo"
+    "tslint": "tslint --project ./tsconfig.json",
+    "test": "jest",
+    "prepublishOnly": "npm run build",
+    "build": "npm run clean && tsc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "postpublish": "git push && git push --tags"
   },
   "author": "Michael Penrod <therealnerdybeast@gmail.com>",
   "license": "ISC",
