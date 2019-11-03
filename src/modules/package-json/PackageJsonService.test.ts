@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { InquirerModule } from '../third-party/InquirerModule';
 import { PackageJsonService } from './PackageJsonService';
 import { Inquirer } from 'inquirer';
+import { PackageJsonModule } from './PackageJsonModule';
 
 describe('PackageJsonService', () => {
 
@@ -11,12 +12,7 @@ describe('PackageJsonService', () => {
 	beforeEach(async () => {
 
 		const mockPackageJsonModule = await Test.createTestingModule({
-			imports: [
-				InquirerModule
-			],
-			providers: [
-				PackageJsonService
-			]
+			imports: [PackageJsonModule]
 		}).compile();
 
 		packageJsonService = mockPackageJsonModule.get<PackageJsonService>(PackageJsonService);
@@ -43,4 +39,12 @@ describe('PackageJsonService', () => {
 		expect(packageJson.bin).toHaveProperty(answers.cmd);
 	});
 
+	test('getCommandFromPackageName', () => {
+		expect(PackageJsonService.getCommandFromPackageName('@cool/cli')).toBe('cli');
+		expect(PackageJsonService.getCommandFromPackageName('@cool/cli.tool')).toBe('cli-tool');
+		expect(PackageJsonService.getCommandFromPackageName('@cool/cli_tool')).toBe('cli-tool');
+		expect(PackageJsonService.getCommandFromPackageName('@cool/my.cli.tool')).toBe('my-cli-tool');
+		expect(PackageJsonService.getCommandFromPackageName('my.cli.tool')).toBe('my-cli-tool');
+		expect(PackageJsonService.getCommandFromPackageName('my_cli_tool')).toBe('my-cli-tool');
+	});
 });

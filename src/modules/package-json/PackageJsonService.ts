@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Inquirer } from 'inquirer';
-import { validatePackageName } from '../../utils/Validators';
+import { validatePackageName, validateVersionNumber } from '../../utils/Validators';
 
 @Injectable()
 export class PackageJsonService {
@@ -23,29 +23,7 @@ export class PackageJsonService {
 			name: 'version',
 			message: 'Please enter the version number (must be a valid semver version)',
 			default: '0.0.1',
-			validate(version: string) {
-
-				version = (version || '').trim();
-
-				if(!version) {
-					return false;
-				}
-
-				const pattern = /^\d+\.\d+\.\d+$/;
-
-				if(pattern.test(version)) {
-
-					for(const section of version.split('.')) {
-						if(section.length > 1 && section[0] === '0') {
-							return `Version numbers may not contain leading zeros if multiple digits long, error at: "${section}"`;
-						}
-					}
-
-					return true;
-				}
-
-				return 'Version number must be in the format x.x.x and may only contain numbers';
-			}
+			validate: validateVersionNumber
 		}, {
 			type: 'input',
 			name: 'description',
@@ -59,14 +37,8 @@ export class PackageJsonService {
 			name: 'cmd',
 			message: 'Please enter the name of the command that will be used to invoke this cli in the terminal',
 			default(answers: any) {
-
 				let packageName = answers.packageName.trim();
-
-				if(packageName.startsWith('@')) {
-					packageName = packageName.split('/')[1];
-				}
-
-				return packageName.replace(/[_\.]+/g, '-');
+				return PackageJsonService.getCommandFromPackageName(packageName);
 			}
 		}]);
 
@@ -113,4 +85,12 @@ export class PackageJsonService {
 		});
 	}
 
+	public static getCommandFromPackageName(packageName: string) : string {
+
+		if(packageName.startsWith('@')) {
+			packageName = packageName.split('/')[1];
+		}
+
+		return packageName.replace(/[_\.]+/g, '-');
+	}
 }

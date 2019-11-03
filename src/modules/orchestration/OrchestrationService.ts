@@ -20,7 +20,7 @@ export class OrchestrationService {
 		this.ideService = ideService;
 	}
 
-	public async createNewProject(isDevelopment: boolean) {
+	public async createNewProject(isDevelopment: boolean) : Promise<void> {
 
 		const directoryStructure = await this.buildDirectoryStructure();
 		const destinationDirectory = isDevelopment ? this.path.join(__dirname, '../../../temp') : this.path.normalize(process.cwd());
