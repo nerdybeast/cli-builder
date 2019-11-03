@@ -9,7 +9,8 @@
   "scripts": {
     "test": "jest",
     "tslint": "tslint --project ./tsconfig.json",
-    "preversion": "npm run tslint && npm run test"
+    "preversion": "npm run tslint && npm run test",
+    "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
   "author": "Michael Penrod <therealnerdybeast@gmail.com>",
   "license": "ISC",
@@ -30,6 +31,7 @@
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^24.0.19",
     "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
@@ -42,7 +44,10 @@
       "src"
     ],
     "collectCoverageFrom": [
-			"./src/**/*.ts"
-		]
+      "./src/**/*.ts",
+      "!./src/index.ts",
+      "!./src/local-development.ts",
+      "!./src/modules/main/MainService.ts"
+    ]
   }
 }

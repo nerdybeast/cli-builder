@@ -5,6 +5,7 @@ import { OrchestrationService } from './OrchestrationService';
 import { IDEService } from '../ide/IDEService';
 import { FileModel } from './FileModel';
 import FsExtra from 'fs-extra';
+import path from 'path';
 
 describe('OrchestrationService', () => {
 
@@ -25,27 +26,29 @@ describe('OrchestrationService', () => {
 		fs = mockOrchestrionModule.get<typeof FsExtra>('fs-extra');
 	});
 
-	test('buildDirectoryStructure - package json only', async () => {
+	test('buildDirectoryStructure - no additional file models', async () => {
 
-		jest.spyOn(packageJsonService, 'askForDetails').mockResolvedValue({ });
 		jest.spyOn(ideService, 'vscodeSetup').mockResolvedValue(null);
+
+		const result = await orchestrationService.buildDirectoryStructure();
+		expect(result).toHaveLength(0);
+	});
+
+	test('buildDirectoryStructure - includes vscode debugging', async () => {
+
+		jest.spyOn(ideService, 'vscodeSetup').mockResolvedValue(new FileModel('./', ''));
 
 		const result = await orchestrationService.buildDirectoryStructure();
 		expect(result).toHaveLength(1);
 	});
 
-	test('buildDirectoryStructure - includes vscode debugging', async () => {
-
-		jest.spyOn(packageJsonService, 'askForDetails').mockResolvedValue({ });
-		jest.spyOn(ideService, 'vscodeSetup').mockResolvedValue(new FileModel('./', ''));
-
-		const result = await orchestrationService.buildDirectoryStructure();
-		expect(result).toHaveLength(2);
-	});
-
 	test('createNewProject', async () => {
 
-		jest.spyOn(packageJsonService, 'askForDetails').mockResolvedValue({ });
+		jest.spyOn(packageJsonService, 'askForDetails').mockResolvedValue({
+			bin: {
+				test: ''
+			}
+		});
 		
 		//Simulates no vscode debugging being added
 		jest.spyOn(ideService, 'vscodeSetup').mockResolvedValue(null);
@@ -55,7 +58,7 @@ describe('OrchestrationService', () => {
 		jest.spyOn(fs, 'ensureFile').mockImplementation(() => Promise.resolve());
 		jest.spyOn(fs, 'writeFile').mockImplementation(() => Promise.resolve());
 
-		await orchestrationService.createNewProject('');
+		await orchestrationService.createNewProject(path.join(__dirname, '../../../temp'));
 		
 	});
 });

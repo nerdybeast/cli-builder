@@ -1,4 +1,4 @@
-import { validatePackageName, INVALID_PACKAGE_NAME_ERROR, MISSING_PACKAGE_NAME_ERROR, validateVersionNumber, INVALID_VERSION_NUMBER_ERROR, leadingZeroVersionNumberError } from "./Validators";
+import { validatePackageName, INVALID_PACKAGE_NAME_ERROR, MISSING_PACKAGE_NAME_ERROR, validateVersionNumber, INVALID_VERSION_NUMBER_ERROR, leadingZeroVersionNumberError, MISSING_VERSION_NUMBER_ERROR } from "./Validators";
 
 describe('Validators', () => {
 
@@ -69,5 +69,9 @@ describe('Validators', () => {
 
 	test('validateVersionNumber - leading zero - returns leading zero error', () => {
 		expect(validateVersionNumber('1.033.1')).toBe(leadingZeroVersionNumberError('033'));
+	});
+
+	test('validateVersionNumber - no version number supplied - returns mising version number error', () => {
+		expect(validateVersionNumber('')).toBe(MISSING_VERSION_NUMBER_ERROR);
 	});
 });
