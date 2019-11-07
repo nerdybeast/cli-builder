@@ -32,7 +32,7 @@ export class OrchestrationService {
 		const directoryStructure = await this.buildDirectoryStructure();
 		directoryStructure.push(packageJsonFileModel);
 
-		const source = this.path.join(__dirname, '../../static-directory-structure');
+		const source = this.path.normalize('../../../static-directory-structure');
 		await this.fs.copy(source, destinationDirectory);
 
 		for(const fileModel of directoryStructure) {
