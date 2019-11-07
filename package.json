@@ -18,7 +18,8 @@
     "compile": "tsc && npm run copyfiles",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "postpublish": "git push && git push --tags",
-    "copyfiles": "copyfiles --all --up=1 ./src/static-directory-structure/**/* ./dist"
+    "copyfiles": "copyfiles --all --up=1 ./src/static-directory-structure/**/* ./dist",
+    "tsc": "tsc"
   },
   "author": "Michael Penrod <therealnerdybeast@gmail.com>",
   "license": "ISC",

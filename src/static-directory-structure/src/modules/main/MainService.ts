@@ -19,11 +19,14 @@ export class MainService {
 		this.commander
 			.command('ping')
 			.description('Simply replies to ensure this cli tool is working')
-			.action(() => actionToExecute = Promise.resolve(console.log('pong')));
+			.action(() => {
+				//Here you can set this to be anything, inject other services and invoke methods or whatever...
+				actionToExecute = Promise.resolve(console.log('pong'));
+			});
 
 		this.commander.parse(process.argv);
 
-		if(!this.commander.args.length) {
+		if(this.commander.rawArgs.length < 3) {
 			this.commander.help();
 			return;
 		}

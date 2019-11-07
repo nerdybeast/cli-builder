@@ -70,6 +70,9 @@
 
 		//Even though this directory is in the src folder, we don't want typescript processing these files (turning them into js files)
 		//We'll manually copy these into the dist folder on a build
-		"./src/static-directory-structure"
+		"./src/static-directory-structure",
+
+		//
+		"./src/**/*.test.ts"
 	]
 }
