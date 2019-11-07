@@ -30,7 +30,7 @@ export class MainService {
 
 		this.commander.parse(process.argv);
 
-		if(!this.commander.args.length) {
+		if(this.commander.rawArgs.length < 3) {
 			this.commander.help();
 			return;
 		}
