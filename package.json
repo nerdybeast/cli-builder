@@ -4,7 +4,7 @@
   "description": "Scaffolds out a new cli project",
   "main": "./dist/index.js",
   "bin": {
-    "cli-builder": "./dist/index.js"
+    "cli-builder": "./bin/run"
   },
   "scripts": {
     "publish:patch": "npm version patch && npm publish --access public",
