@@ -12,7 +12,7 @@
 !/bin/**/*
 
 # And the static files that are used to scaffold out the created cli project
-!/static-directory-structure/**/*
+# !/static-directory-structure/**/*
 
 # Note: The package.json file is included by default by npm so we don't need to tell npm to include
 # it back in here since we technically ignored it above.
