@@ -8,7 +8,7 @@ const tsconfigPath = path.join(__dirname, '../tsconfig.json');
 const isDevelopment = fs.existsSync(tsconfigPath);
 const moduleToUse = isDevelopment ? 'src' : 'dist';
 
-if (isDevelopment) {
+if(isDevelopment) {
 	require('ts-node').register({ project: tsconfigPath });
 }
 
