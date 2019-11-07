@@ -14,10 +14,11 @@
     "tslint": "tslint --project ./tsconfig.json",
     "test": "jest",
     "prepublishOnly": "npm run build",
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && npm run compile",
+    "compile": "tsc && npm run copyfiles",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "postpublish": "git push && git push --tags",
-    "copyfiles": "copyfiles"
+    "copyfiles": "copyfiles --all --up=1 ./src/static-directory-structure/**/* ./dist"
   },
   "author": "Michael Penrod <therealnerdybeast@gmail.com>",
   "license": "ISC",

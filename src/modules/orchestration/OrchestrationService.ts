@@ -32,7 +32,7 @@ export class OrchestrationService {
 		const directoryStructure = await this.buildDirectoryStructure();
 		directoryStructure.push(packageJsonFileModel);
 
-		const source = this.path.normalize('../../../static-directory-structure');
+		const source = this.path.join(__dirname, '../../static-directory-structure');
 		await this.fs.copy(source, destinationDirectory);
 
 		for(const fileModel of directoryStructure) {
@@ -40,6 +40,8 @@ export class OrchestrationService {
 			await this.fs.ensureFile(filePath);
 			await this.fs.writeFile(filePath, fileModel.contents, 'utf8');
 		}
+
+		console.log(`Cli created at: ${destinationDirectory}`);
 	}
 
 	public async buildDirectoryStructure() : Promise<FileModel[]> {

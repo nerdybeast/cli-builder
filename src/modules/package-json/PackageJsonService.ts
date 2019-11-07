@@ -56,10 +56,10 @@ export class PackageJsonService {
 				test: "jest"
 			},
 			dependencies: {
-				"@nestjs/common": "^6.8.3",
-				"@nestjs/core": "^6.8.3",
-				"@types/node": "^12.11.6",
-				"commander": "^3.0.2",
+				"@nestjs/common": "^6.9.0",
+				"@nestjs/core": "^6.9.0",
+				"@types/node": "^12.12.6",
+				"commander": "^4.0.0",
 				"inquirer": "^7.0.0",
 				"reflect-metadata": "^0.1.13",
 				"rxjs": "^6.5.3",

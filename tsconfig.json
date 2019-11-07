@@ -64,8 +64,12 @@
 		"./src/**/*"
 	],
 	"exclude": [
+
 		// Have to exclude /temp here otherwise tsc sees typescript files in here and complains that they aren't under the /src folder
 		"./temp",
-		"./static-directory-structure"
+
+		//Even though this directory is in the src folder, we don't want typescript processing these files (turning them into js files)
+		//We'll manually copy these into the dist folder on a build
+		"./src/static-directory-structure"
 	]
 }
