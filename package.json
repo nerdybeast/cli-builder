@@ -1,6 +1,6 @@
 {
   "name": "@penrod/cli-builder",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Scaffolds out a new cli project",
   "main": "./dist/index.js",
   "bin": {
