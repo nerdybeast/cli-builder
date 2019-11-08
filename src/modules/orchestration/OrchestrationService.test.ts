@@ -31,7 +31,7 @@ describe('OrchestrationService', () => {
 		jest.spyOn(ideService, 'vscodeSetup').mockResolvedValue(null);
 
 		const result = await orchestrationService.buildDirectoryStructure();
-		expect(result).toHaveLength(0);
+		expect(result).toHaveLength(1);
 	});
 
 	test('buildDirectoryStructure - includes vscode debugging', async () => {
@@ -39,7 +39,7 @@ describe('OrchestrationService', () => {
 		jest.spyOn(ideService, 'vscodeSetup').mockResolvedValue(new FileModel('./', ''));
 
 		const result = await orchestrationService.buildDirectoryStructure();
-		expect(result).toHaveLength(1);
+		expect(result).toHaveLength(2);
 	});
 
 	test('createNewProject', async () => {
