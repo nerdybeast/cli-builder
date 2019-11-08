@@ -5,6 +5,8 @@ import FsExtra from 'fs-extra';
 import Path from 'path';
 import { IDEService } from '../ide/IDEService';
 import { createGitignore } from '../../utils/createGitignore';
+import { DebugUtilityService } from '../debug-utility/DebugUtilityService';
+import { DebugUtilityFactory } from '../debug-utility/DebugUtilityFactory';
 
 @Injectable()
 export class OrchestrationService {
@@ -13,12 +15,14 @@ export class OrchestrationService {
 	private fs: typeof FsExtra;
 	private path: typeof Path;
 	private ideService: IDEService;
+	private debugService: DebugUtilityService;
 
-	constructor(packageJsonService: PackageJsonService, @Inject('fs-extra') fs: typeof FsExtra, @Inject('path') path: typeof Path, ideService: IDEService) {
+	constructor(packageJsonService: PackageJsonService, @Inject('fs-extra') fs: typeof FsExtra, @Inject('path') path: typeof Path, ideService: IDEService, debugFactory: DebugUtilityFactory) {
 		this.packageJsonService = packageJsonService;
 		this.fs = fs;
 		this.path = path;
 		this.ideService = ideService;
+		this.debugService = debugFactory.create('OrchestrationService');
 	}
 
 	public async createNewProject(currentWorkingDirectory: string) : Promise<void> {
@@ -34,6 +38,8 @@ export class OrchestrationService {
 		directoryStructure.push(packageJsonFileModel);
 
 		const source = this.path.join(__dirname, '../../static-directory-structure');
+		this.debugService.debug('static-directory-structure location', source);
+
 		await this.fs.copy(source, destinationDirectory);
 
 		for(const fileModel of directoryStructure) {
