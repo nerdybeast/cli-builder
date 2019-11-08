@@ -1,4 +1,9 @@
-# Logs
+/**
+ * We need to create this file on the fly because having it nested in this project (in the static-directory-structure folder)
+ * breaks what gets npm published in the dist folder.
+ */
+export function createGitignore() : string {
+	return `# Logs
 logs
 *.log
 npm-debug.log*
@@ -75,15 +80,18 @@ typings/
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
-# next.js build output
+# Next.js build output
 .next
 
-# nuxt.js build output
+# Nuxt.js build / generate output
 .nuxt
+dist
 
-# gatsby files
+# Gatsby files
 .cache/
-public
+# Comment in the public line in if your project uses Gatsby and *not* Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
 
 # vuepress build output
 .vuepress/dist
@@ -108,8 +116,8 @@ public
 # Build output - this needs to be pushed up to the npm registry but should not be tracked in git.
 dist/
 
-# Typescript incremental compilation file - speeds up typescript builds but should be unique per user.
-tsconfig.tsbuildinfo
-
 # vscode config - each user may have their own preference
 .vscode/
+
+`;
+}

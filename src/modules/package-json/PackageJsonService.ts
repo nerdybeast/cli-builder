@@ -52,6 +52,10 @@ export class PackageJsonService {
 			bin: {
 				[answers.cmd]: "./bin/run"
 			},
+			files: [
+				"bin",
+				"dist"
+			],
 			scripts: {
 				test: "jest"
 			},

@@ -72,7 +72,7 @@
 		//We'll manually copy these into the dist folder on a build
 		"./src/static-directory-structure",
 
-		//
+		//We don't need to publish tests to npm so let's keep them out of the dist folder.
 		"./src/**/*.test.ts"
 	]
 }

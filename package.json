@@ -6,6 +6,10 @@
   "bin": {
     "cli-builder": "./bin/run"
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "scripts": {
     "publish:patch": "npm version patch && npm publish --access public",
     "publish:minor": "npm version minor && npm publish --access public",

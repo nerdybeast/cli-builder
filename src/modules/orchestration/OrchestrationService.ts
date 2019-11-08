@@ -4,6 +4,7 @@ import { FileModel } from "./FileModel";
 import FsExtra from 'fs-extra';
 import Path from 'path';
 import { IDEService } from '../ide/IDEService';
+import { createGitignore } from '../../utils/createGitignore';
 
 @Injectable()
 export class OrchestrationService {
@@ -32,7 +33,7 @@ export class OrchestrationService {
 		const directoryStructure = await this.buildDirectoryStructure();
 		directoryStructure.push(packageJsonFileModel);
 
-		const source = this.path.normalize('../../static-directory-structure');
+		const source = this.path.join(__dirname, '../../static-directory-structure');
 		await this.fs.copy(source, destinationDirectory);
 
 		for(const fileModel of directoryStructure) {
@@ -52,6 +53,10 @@ export class OrchestrationService {
 		if(vscodeFileModel !== null) {
 			directoryStructure.push(vscodeFileModel);
 		}
+
+		const gitignoreContents = createGitignore();
+		const gitignoreFileModel = new FileModel('./.gitignore', gitignoreContents);
+		directoryStructure.push(gitignoreFileModel);
 
 		return directoryStructure;
 	}
