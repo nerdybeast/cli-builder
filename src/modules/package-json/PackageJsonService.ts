@@ -60,24 +60,24 @@ export class PackageJsonService {
 				test: "jest"
 			},
 			dependencies: {
-				"@nestjs/common": "^6.9.0",
-				"@nestjs/core": "^6.9.0",
-				"@types/node": "^12.12.6",
-				"commander": "^4.0.0",
-				"inquirer": "^7.0.0",
+				"@nestjs/common": "^6.11.11",
+				"@nestjs/core": "^6.11.11",
+				"@types/node": "^13.9.0",
+				"commander": "^4.1.1",
+				"inquirer": "^7.1.0",
 				"reflect-metadata": "^0.1.13",
-				"rxjs": "^6.5.3",
-				"tslib": "^1.10.0"
+				"rxjs": "^6.5.4",
+				"tslib": "^1.11.1"
 			},
 			devDependencies: {
-				"@nestjs/testing": "^6.8.3",
+				"@nestjs/testing": "^6.11.11",
 				"@types/inquirer": "^6.5.0",
-				"@types/jest": "^24.0.19",
-				"jest": "^24.9.0",
-				"ts-jest": "^24.1.0",
-				"ts-node": "^8.4.1",
-				"tslint": "^5.20.0",
-				"typescript": "^3.6.4"
+				"@types/jest": "^25.1.4",
+				"jest": "^25.1.0",
+				"ts-jest": "^25.2.1",
+				"ts-node": "^8.6.2",
+				"tslint": "^6.1.0",
+				"typescript": "^3.8.3"
 			},
 			jest: {
 				preset: "ts-jest",
