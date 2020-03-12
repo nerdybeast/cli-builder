@@ -67,7 +67,8 @@ export class PackageJsonService {
 				"inquirer": "^7.1.0",
 				"reflect-metadata": "^0.1.13",
 				"rxjs": "^6.5.4",
-				"tslib": "^1.11.1"
+				"tslib": "^1.11.1",
+				"fs-extra": "^8.1.0"
 			},
 			devDependencies: {
 				"@nestjs/testing": "^6.11.11",
@@ -77,7 +78,8 @@ export class PackageJsonService {
 				"ts-jest": "^25.2.1",
 				"ts-node": "^8.6.2",
 				"tslint": "^6.1.0",
-				"typescript": "^3.8.3"
+				"typescript": "^3.8.3",
+				"@types/fs-extra": "^8.1.0"
 			},
 			jest: {
 				preset: "ts-jest",
